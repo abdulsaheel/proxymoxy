@@ -1,0 +1,29 @@
+<!-- templates/view_config.html -->
+{% extends "base.html" %}
+
+{% block title %}Nginx Configuration - {{ server.name }}{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>Nginx Configuration for {{ server.name }}</h1>
+    <div>
+        <a href="{{ url_for('view_server', server_id=server.id) }}" class="btn btn-secondary me-2">
+            <i class="fas fa-arrow-left me-2"></i> Back to Server
+        </a>
+        <form action="{{ url_for('deploy_server', server_id=server.id) }}" method="POST" class="d-inline">
+            <button type="submit" class="btn btn-success">
+                <i class="fas fa-rocket me-2"></i> Deploy
+            </button>
+        </form>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <h5 class="mb-0">/etc/nginx/sites-available/{{ server.domain }}</h5>
+    </div>
+    <div class="card-body">
+        <div class="code-block">{{ config }}</div>
+    </div>
+</div>
+{% endblock %}

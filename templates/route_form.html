@@ -1,0 +1,38 @@
+<!-- templates/route_form.html -->
+{% extends "base.html" %}
+
+{% block title %}{{ 'Edit' if route else 'New' }} Route - {{ server.name }}{% endblock %}
+
+{% block content %}
+<h1>{{ 'Edit' if route else 'New' }} Route</h1>
+<h5 class="text-muted mb-4">Server: {{ server.name }}</h5>
+
+<form method="POST" class="mt-4">
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <label for="path" class="form-label">Path</label>
+            <input type="text" class="form-control" id="path" name="path" value="{{ route.path if route else '' }}" required>
+            <div class="form-text">The URL path to match (e.g., /auth, /orders, /api).</div>
+        </div>
+        <div class="col-md-6">
+            <label for="target_domain" class="form-label">Target Domain</label>
+            <input type="text" class="form-control" id="target_domain" name="target_domain" value="{{ route.target_domain if route else '' }}" required>
+            <div class="form-text">The target domain to proxy to (e.g., orderbook-stage.hashira.io).</div>
+        </div>
+    </div>
+
+    <div class="mb-3 form-check">
+        <input type="checkbox" class="form-check-input" id="use_rewrite" name="use_rewrite" {{ 'checked' if (route and route.use_rewrite) or (not route) else '' }}>
+        <label class="form-check-label" for="use_rewrite">Strip Path Prefix</label>
+        <div class="form-text">
+            If checked, the path prefix will be stripped when forwarding to the target (e.g., /orders/auth -> /auth).
+            If unchecked, the full path will be forwarded (e.g., /auth/nonce -> /auth/nonce).
+        </div>
+    </div>
+
+    <div class="d-flex justify-content-between">
+        <a href="{{ url_for('view_server', server_id=server.id) }}" class="btn btn-secondary">Cancel</a>
+        <button type="submit" class="btn btn-primary">Save</button>
+    </div>
+</form>
+{% endblock %}
